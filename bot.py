@@ -29,21 +29,24 @@ async def card(ctx, *names):
     tcgplayer_link = response["purchase_uris"]["tcgplayer"]
     price_usd = response["prices"]["usd"]
     colors = response["color_identity"]
-    if colors == '':
+    if colors == []:
         colors = 'Colorless'
     cmc = response["mana_cost"]
     spell_type = response["type_line"]
     oracle_text = response["oracle_text"]
     image = response["image_uris"]["large"]
     
+    embed=discord.Embed()
     
-    await ctx.send(f"**{name}**")
-    await ctx.send(f"**TCGPLAYER:**\n{tcgplayer_link}")
-    await ctx.send(f"**Price: **${price_usd}")
-    await ctx.send(f"**Colors: **{colors}")
-    await ctx.send(f"**CMC: **{cmc}")
-    await ctx.send(f"**Spell Type: **{spell_type}")
-    await ctx.send(f"**Text: **{oracle_text}")
-    await ctx.send(f"{image}")
+    embed.set_thumbnail(url=image)
+    embed.add_field(name=f"**{name}**", value="", inline=False)
+    embed.add_field(name="**TCGPlayer**", value=f"{tcgplayer_link}", inline=False)
+    embed.add_field(name="**Price**", value=f"${price_usd}", inline=False)
+    embed.add_field(name="**Colors**", value=f"{colors}", inline=False)
+    embed.add_field(name="**CMC**", value=f"{cmc}", inline=False)
+    embed.add_field(name="**Spell Type**", value=f"{spell_type}", inline=False)
+    embed.add_field(name="**Text**", value=f"{oracle_text}", inline=False)
+    
+    await ctx.send(embed=embed)
     
 bot.run(BOT_TOKEN)
